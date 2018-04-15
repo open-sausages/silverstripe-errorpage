@@ -8,10 +8,10 @@ use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\Assets\Dev\TestAssetStore;
-use SilverStripe\Control\HTTPResponse_Exception;
+use SilverStripe\Control\HTTPResponseException;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Director;
-use SilverStripe\View\SSViewer;
+use SilverStripe\View\Templates\Viewer;
 
 /**
  * @package cms
@@ -83,7 +83,7 @@ class ErrorPageTest extends FunctionalTest
             $controller = singleton(ContentController::class);
             $controller->httpError(403);
             $this->fail('Expected exception to be thrown');
-        } catch (HTTPResponse_Exception $e) {
+        } catch (HTTPResponseException $e) {
             $response = $e->getResponse();
             $this->assertEquals($response->getStatusCode(), '403');
             $this->assertNotNull($response->getBody(), 'We have body text from the error page');
@@ -129,8 +129,8 @@ class ErrorPageTest extends FunctionalTest
     public function testThemedCaching()
     {
         // Empty theme should not break static caching
-        SSViewer::set_themes([
-            SSViewer::DEFAULT_THEME,
+        Viewer::set_themes([
+            Viewer::DEFAULT_THEME,
         ]);
         $this->testStaticCaching();
     }

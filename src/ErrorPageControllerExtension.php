@@ -5,7 +5,7 @@ namespace SilverStripe\ErrorPage;
 use SilverStripe\ErrorPage\ErrorPage;
 use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Control\HTTPResponse_Exception;
+use SilverStripe\Control\HTTPResponseException;
 use SilverStripe\Core\Extension;
 
 /**
@@ -19,7 +19,7 @@ class ErrorPageControllerExtension extends Extension
      *
      * @param int $statusCode
      * @param HTTPRequest $request
-     * @throws HTTPResponse_Exception
+     * @throws HTTPResponseException
      */
     public function onBeforeHTTPError($statusCode, $request)
     {
@@ -28,7 +28,7 @@ class ErrorPageControllerExtension extends Extension
         }
         $response = ErrorPage::response_for($statusCode);
         if ($response) {
-            throw new HTTPResponse_Exception($response, $statusCode);
+            throw new HTTPResponseException($response, $statusCode);
         }
     }
 }

@@ -20,7 +20,7 @@ use SilverStripe\ORM\DB;
 use SilverStripe\Security\Member;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\View\Requirements;
-use SilverStripe\View\SSViewer;
+use SilverStripe\View\Templates\Viewer;
 
 /**
  * ErrorPage holds the content for the page of an error response.
@@ -280,11 +280,11 @@ class ErrorPage extends Page
         }
 
         // Run the page (reset the theme, it might've been disabled by LeftAndMain::init())
-        $originalThemes = SSViewer::get_themes();
+        $originalThemes = Viewer::get_themes();
         try {
             // Restore front-end themes from config
-            $themes = SSViewer::config()->get('themes') ?: $originalThemes;
-            SSViewer::set_themes($themes);
+            $themes = Viewer::config()->get('themes') ?: $originalThemes;
+            Viewer::set_themes($themes);
             // Render page as non-member
             $response = Member::actAs(null, function () {
                 return Director::test(Director::makeRelative($this->Link()));
@@ -292,7 +292,7 @@ class ErrorPage extends Page
             $errorContent = $response->getBody();
         } finally {
             // Restore themes
-            SSViewer::set_themes($originalThemes);
+            Viewer::set_themes($originalThemes);
         }
 
         // Store file content in the default store
